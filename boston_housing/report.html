@@ -13777,7 +13777,7 @@ mgE7AAAAAElFTkSuQmCC
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="&#38382;&#39064;-7---&#22238;&#31572;:">&#38382;&#39064; 7 - &#22238;&#31572;:<a class="anchor-link" href="#&#38382;&#39064;-7---&#22238;&#31572;:">&#194;&#182;</a></h3><p>某个模型中的参数有多个离散的值可供选择，穷举各种参数组合，将每组参数组合在数据上跑出得分（得分规则可选，数据划分规则可选），得分最好的就是最好的参数组合</p>
+<h3 id="&#38382;&#39064;-7---&#22238;&#31572;:">&#38382;&#39064; 7 - &#22238;&#31572;:<a class="anchor-link" href="#&#38382;&#39064;-7---&#22238;&#31572;:">&#194;&#182;</a></h3><p>模型中的某些参数有多个值可供选择，穷举所有需要调优的参数的备选值的组合，将每组参数组合在数据上跑出得分（得分规则可选，数据划分规则可选），得分最好的就是最好的参数组合</p>
 
 </div>
 </div>
@@ -13843,11 +13843,11 @@ mgE7AAAAAElFTkSuQmCC
 <span class="k">def</span> <span class="nf">fit_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; 基于输入数据 [X,y]，利于网格搜索找到最优的决策树模型&quot;&quot;&quot;</span>
     
-    <span class="n">cross_validator</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">()</span>
+    <span class="n">cross_validator</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     
     <span class="n">regressor</span> <span class="o">=</span> <span class="n">DecisionTreeRegressor</span><span class="p">()</span>
 
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]}</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)}</span>
 
     <span class="n">scoring_fnc</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">performance_metric</span><span class="p">)</span>
 
@@ -14064,7 +14064,9 @@ Predicted selling price for Client 3&#39;s home: $895,350.00
 <h3 id="&#38382;&#39064;-10---&#22238;&#31572;&#65306;">&#38382;&#39064; 10 - &#22238;&#31572;&#65306;<a class="anchor-link" href="#&#38382;&#39064;-10---&#22238;&#31572;&#65306;">&#194;&#182;</a></h3><p>Predicted selling price for Client 1's home: $349,400.00</p>
 <p>Predicted selling price for Client 2's home: $240,205.00</p>
 <p>Predicted selling price for Client 3's home: $895,350.00</p>
-<p>合理，和之前分析的房间越多越贵，贫穷阶层越多越便宜，学生教师比越高越便宜的特征一致</p>
+<p>合理</p>
+<p>和之前分析的房间越多越贵，贫穷阶层越多越便宜，学生教师比越高越便宜的特征一致</p>
+<p>比最低房价105,000高，比最高房价1,024,800低，是一个正常合理的房屋价格</p>
 
 </div>
 </div>
