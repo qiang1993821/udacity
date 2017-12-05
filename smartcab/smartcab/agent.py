@@ -23,7 +23,7 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Set any additional class parameters as needed
-
+        self.times = 0
 
     def reset(self, destination=None, testing=False):
         """ The reset function is called at the beginning of each trial.
@@ -39,7 +39,9 @@ class LearningAgent(Agent):
         # Update epsilon using a decay function of your choice
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
-        self.epsilon = self.epsilon - 0.005
+        self.epsilon = math.cos((self.times * math.pi) / 600)
+        self.times += 1
+        # self.alpha = self.epsilon if self.epsilon > 0 and self.epsilon < 0.8 else self.alpha
         if testing:
             self.epsilon = 0
             self.alpha = 0
@@ -104,7 +106,6 @@ class LearningAgent(Agent):
         self.state = state
         self.next_waypoint = self.planner.next_waypoint()
         action = None
-
         ########### 
         ## TO DO ##
         ###########
@@ -112,20 +113,13 @@ class LearningAgent(Agent):
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
 
-        if self.learning:
-            if random.random() < self.epsilon:
-                action = random.choice(self.valid_actions)
-            else :
-                maxQ = self.Q[state][action]
-                for key,value in self.Q[state].items():
-                    if value > maxQ:
-                        maxQ = value
-                        action = key
-        else :
-            action = random.choice(self.valid_actions)
+        if self.learning and random.random() >= self.epsilon:
+            maxQ = self.get_maxQ(state)
+            max_actions = [key for key, value in self.Q[state].items() if value == maxQ]
+            return random.choice(max_actions)
+        
+        return random.choice(self.valid_actions)
  
-        return action
-
 
     def learn(self, state, action, reward):
         """ The learn function is called after the agent completes an action and
@@ -174,7 +168,7 @@ def run():
     #   learning   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
-    agent = env.create_agent(LearningAgent, learning=True, alpha=0.8)
+    agent = env.create_agent(LearningAgent, learning=True, alpha=0.6)
     
     ##############
     # Follow the driving agent
